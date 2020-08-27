@@ -1,0 +1,51 @@
+ifeq ($(strip $(DID)),)
+$(error Deployment id value is missing!)
+endif
+DEP  := $(shell source functions; splitdep $(DID))
+PRE  := $(word 1, $(DEP))
+NUM  := $(word 2, $(DEP))
+SUF  := $(word 3, $(DEP))
+DEP  := $(word 4, $(DEP))
+
+SURFACE := met rad
+SUBSURF := temp pres sal
+RAIN    :=
+CURRENT :=
+
+.PHONY : all surface subsurf permissions clean
+
+all : surface subsurf
+
+permissions : chmod.sh
+	-bash $^
+
+clean :
+	rm -f $(DEP).cal pressure_$(SUF).txt
+
+$(DEP).cal :
+	calfile $(DEP) | egrep -v '^#' > $@
+
+surface : $(SURFACE:%=%$(NUM)$(SUF).davg) permissions
+
+$(SURFACE:%=%$(NUM)$(SUF).ram) : $(DEP).cal
+	processA2Tube $(DEP) --cal=$^ ./
+
+$(SURFACE:%=%$(NUM)$(SUF).flg) : %.flg : %.ram flag$(NUM)$(SUF).txt
+	flag_data $(DEP) $^
+
+$(SURFACE:%=%$(NUM)$(SUF).davg) : %.davg : %.flg
+	davg $(DEP) $^
+
+subsurf : $(SUBSURF:%=%$(NUM)$(SUF).davg) permissions
+
+$(SUBSURF:%=%$(NUM)$(SUF).ram) : $(DEP).cal
+	bash scripts/badA2increment.sh 15540 120 $(DEP)
+	processA2Mod $(DEP) --cal=$^ ./
+	mv temp113a.ram temp113a.ram_orig
+	python2 scripts/mergeA2ram.py 15540 temp113a.ram_orig temp113a.ram_120 > temp113a.ram
+
+$(SUBSURF:%=%$(NUM)$(SUF).flg) : %.flg : %.ram flag$(NUM)$(SUF).txt
+	flag_data $(DEP) $^
+
+$(SUBSURF:%=%$(NUM)$(SUF).davg) : %.davg : %.flg
+	davg $(DEP) $^
