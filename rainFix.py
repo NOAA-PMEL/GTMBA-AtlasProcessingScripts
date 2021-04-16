@@ -51,4 +51,4 @@ BEGIN END  Q3  1
     args.b,
 )
 
-sys.write(out)
+print(out)
