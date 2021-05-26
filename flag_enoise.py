@@ -42,7 +42,12 @@ def _getarguments(argv):
         description="""
     Create Atlas flags for systematic electronic noise in rain data"""
     )
-    parser.add_argument("fob", metavar="rain_file", type=argparse.FileType('r'), help="a file to process")
+    parser.add_argument(
+        "fob",
+        metavar="rain_file",
+        type=argparse.FileType("r"),
+        help="a file to process",
+    )
     parser.add_argument("--ram", action="store_true", help="data in RAM format")
     parser.add_argument(
         "--lim",
@@ -56,6 +61,21 @@ def _getarguments(argv):
     args = parser.parse_args(argv)
     return args
     ## def _getarguments
+
+
+def _reduce(dtm, dt):
+    stp = dt == numpy.diff(dtm)
+    sel = dtm.tolist()
+    tms = [[sel[0], sel[0]]]
+    n = 1
+    for s in stp:
+        if s:
+            tms[-1][1] = sel[n]
+        else:
+            tms.append([sel[n], sel[n]])
+        n += 1
+    return tms
+    ## def _reduce
 
 
 def _main(argv):
@@ -78,7 +98,7 @@ def _main(argv):
     if dtm.size:
         total = n2355.size + n2356.size + n1204.size + n1205.size
         dt = numpy.diff(frm.index.values.astype("datetime64[s]"))[0]
-        dtm = reduceTimes(dtm, dt)
+        dtm = _reduce(dtm, dt)
         flags = ["", "RAIN", "## DAW systematic electronic noise using flag_enoise"]
         flags.append("##{:>16} = {}".format("YYYYDDD235532", n2355.size))
         flags.append("##{:>16} = {}".format("YYYYDDD235632", n2356.size))
@@ -88,26 +108,10 @@ def _main(argv):
         flags.extend(["{:%Y%j%H%M%S} {:%Y%j%H%M%S}  F  1".format(*r) for r in dtm])
         flags.append("")
         (fd, fname) = tempfile.mkstemp(prefix="flags_", suffix=".txt", text=True)
-        with os.fdopen(fd, 'w') as fob:
+        with os.fdopen(fd, "w") as fob:
             fob.write("\n".join(flags))
         print(fname)
     ## def _main
-
-
-def reduceTimes(dtm, dt):
-    """"""
-    stp = dt == numpy.diff(dtm)
-    sel = dtm.tolist()
-    tms = [[sel[0], sel[0]]]
-    n = 1
-    for s in stp:
-        if s:
-            tms[-1][1] = sel[n]
-        else:
-            tms.append([sel[n], sel[n]])
-        n += 1
-    return tms
-    ## def reduceTinmes
 
 
 if __name__ == "__main__":
