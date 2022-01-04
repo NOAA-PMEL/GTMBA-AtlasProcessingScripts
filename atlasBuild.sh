@@ -28,10 +28,13 @@ make_files() {
   nxram_setup "$1"
 }
 
-## Actually go get things done
-git clone spectrum:/home/data/nxram/"$1" -b processing
+valid="[a-zA-Z][a-zA-Z][0-9]{3}$"
 
-if [ "$1" -eq 0 ]; then
+## Actually go get things done
+if [[ ! "$1" =~ $valid ]]; then
+  echo "BUOYID should be in the form aa### not $1"
+elif [[ "$1" =~ $valid ]]; then
+  git clone spectrum:/home/data/nxram/"$1" -b processing
   cd "$1" || exit 1
   docfile "$1" >"$1".doc
   make_files "$1"
