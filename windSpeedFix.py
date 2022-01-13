@@ -12,25 +12,25 @@ import tao.util.calc as calc
 
 parser = argparse.ArgumentParser(
     prog="windSpeedFix",
-    description="Simple script to fix wind speeds, U & V, based on input."
+    description="Simple script to fix wind speeds, U & V, based on input.",
 )
-parser.add_argument('file', metavar='file', help='RAM file for editing')
-parser.add_argument('val', type=int, help='Integer the wind will be divided by')
+parser.add_argument("file", metavar="file", help="RAM file for editing")
+parser.add_argument("val", type=int, help="Integer the wind will be divided by")
 
 args = parser.parse_args()
 
 read = RAM.File(args.file)
 frame = read.frame
 
-spd = frame.loc[:, ('SPEED', '-4')]
+spd = frame.loc[:, ("SPEED", "-4")]
 
 newSpd = spd / args.val
 
-u, v = calc.polarcartesian(newSpd.values, frame.loc[:, ('DIR', '-4')].values)
+u, v = calc.polarcartesian(newSpd.values, frame.loc[:, ("DIR", "-4")].values)
 
-frame.loc[:, ('U', '-4')] = u
-frame.loc[:, ('V', '-4')] = v
-frame.loc[:, ('SPEED', '-4')] = newSpd
+frame.loc[:, ("U", "-4")] = u
+frame.loc[:, ("V", "-4")] = v
+frame.loc[:, ("SPEED", "-4")] = newSpd
 
 read.writeAtlas(frame)
 
@@ -38,6 +38,8 @@ out = """
 :: NEED TO ADD THIS TO FLAG FILE! ::
 ## Altered wind speeds by dividing by {}
 BEGIN END  Q3  1..4
-""".format(args.val)
+""".format(
+    args.val
+)
 
 sys.stdout.write(out)
