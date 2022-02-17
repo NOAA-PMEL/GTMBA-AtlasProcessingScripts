@@ -21,11 +21,11 @@ make_files() {
     echo "Requires BUOYID name"
     return 1
   }
-  # shellcheck disable=SC1091
-  source /Users/white/bin/tao/functions
-  D=("$(splitdep "$1")")
-  calfile "$1" | grep -E -v '^#' >"${D[3]}".cal
-  nxram_setup "$1"
+  D=$(depsegments "$1")
+  for s in $D; do
+    calfile "$1" | grep -E -v '^#' >"$1""$s".cal
+    nxram_setup "$1""$s"
+  done
 }
 
 valid="[a-zA-Z][a-zA-Z][0-9]{3}$"
