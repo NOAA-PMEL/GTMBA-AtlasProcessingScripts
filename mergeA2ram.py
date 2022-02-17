@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
 Simple script for pulling in 2 Atlas ram files and merging them into a single
 ram file. Takes the first file and replaces the data column for the serial

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 ## Author: Daryn White, daryn.white@noaa.gov
 ## Last altered: 2018-04-27
 """

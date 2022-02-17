@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 import sys
 import tao.atlas.ram
 
@@ -11,7 +11,7 @@ inframe = infile.frame
 outframe = inframe
 
 for n, i in enumerate(inframe.columns.get_level_values(1)):
-    if i != u"300" and i != u"500":
+    if i != "300" and i != "500":
         outframe = outframe.drop(inframe.columns[n], 1)
 
 infile.writeAtlas(outframe, output=fl + ".0")

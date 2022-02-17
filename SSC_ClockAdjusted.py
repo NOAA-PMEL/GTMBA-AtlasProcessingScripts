@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # Author: Daryn White, daryn.white@noaa.gov
 """
 Take a block of clock adjust times from the module log file
