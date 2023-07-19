@@ -17,7 +17,7 @@ out = []
 
 # RegEx
 patt = re.compile(
-    r"(?<!\w\s{3})(?<!\/\s)(?<=\s)(\d{3,}|\d{1,}|\d\d\.\d)(?=\w{0}%|\s{1,}\/)"
+    r"(?<=\w\s{4}#\d{5})\s+(\d{2,}|\d{1,}|\d\d\.\d|\d.\d)(?=\s%|%|\s{1,}\/)"
 )
 
 for m in re.finditer(patt, args.file.read()):

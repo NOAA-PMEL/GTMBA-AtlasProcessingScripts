@@ -16,7 +16,7 @@ args = parser.parse_args()
 out = []
 
 # RegEx
-patt = re.compile(r"(?<=TP).+(?<=\/\s)(\d{3,}|\d{1,}|\d\d\.\d)(?=\w{0}%)")
+patt = re.compile(r"(?<=TP).+(?<=\/\s)(\d{3,}|\d{1,}|\d\d\.\d)(?=\w{0}%|\s%)")
 
 for m in re.finditer(patt, args.file.read()):
     out.append(float(m.group(1)))

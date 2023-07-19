@@ -24,7 +24,7 @@ make_files() {
   D=$(depsegments "$1")
   for s in $D; do
     calfile "$1" | grep -E -v '^#' >"$1""$s".cal
-    nxram_setup "$1""$s"
+    nxram_setup "$1""$s" --md
   done
 }
 
