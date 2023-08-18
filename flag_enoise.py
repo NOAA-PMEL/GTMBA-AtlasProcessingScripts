@@ -99,7 +99,11 @@ def _main(argv):
         total = n2355.size + n2356.size + n1204.size + n1205.size
         dt = numpy.diff(frm.index.values.astype("datetime64[s]"))[0]
         dtm = _reduce(dtm, dt)
-        flags = ["", "RAIN", "## DAW systematic electronic noise using flag_enoise"]
+        flags = [
+            "",
+            "RAIN",
+            f"## {os.environ.get('USERNAME')} systematic electronic noise using flag_enoise",
+        ]
         flags.append("##{:>16} = {}".format("YYYYDDD235532", n2355.size))
         flags.append("##{:>16} = {}".format("YYYYDDD235632", n2356.size))
         flags.append("##{:>16} = {}".format("YYYYDDD120432", n1204.size))
