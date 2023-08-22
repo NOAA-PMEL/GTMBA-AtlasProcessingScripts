@@ -114,7 +114,7 @@ MAIN: {
     }
 
     $ram_dir = File::Spec->join( $ENV{RAMDBLOADLOGDIR}, $ram_dir );
-    opendir(my $tmpDIR, $ram_dir) or die "Couldn't open directory $ram_dir!";
+    opendir( my $tmpDIR, $ram_dir ) or die "Couldn't open directory $ram_dir!";
     my @dir_list = readdir $tmpDIR;
     closedir $tmpDIR;
 
@@ -182,14 +182,18 @@ MAIN: {
             #     printf "env($cal_dir): %s\n", $ENV{$cal_dir};
             #     printf "calfile: %s.cal\n", $dep;
 
-            $cal  = $ENV{$cal_dir} . "/$dep.cal";
-            AtlasData::Buoy->new($cal => $$buoy) or die "cal file $cal not found!";
-            # $buoy = new AtlasData::Buoy($cal) or die "cal file $cal not found!";
+            $cal = $ENV{$cal_dir} . "/$dep.cal";
+            AtlasData::Buoy->new( $cal => $$buoy )
+              or die "cal file $cal not found!";
+
+          # $buoy = new AtlasData::Buoy($cal) or die "cal file $cal not found!";
         }
         else {
-            $cal  = "$ram_dir$dep.cal";
-            AtlasData::Buoy->new($cal => $$buoy) or die "cal file $cal not found!";
-            # $buoy = new AtlasData::Buoy($cal) or die "cal file $cal not found!";
+            $cal = "$ram_dir$dep.cal";
+            AtlasData::Buoy->new( $cal => $$buoy )
+              or die "cal file $cal not found!";
+
+          # $buoy = new AtlasData::Buoy($cal) or die "cal file $cal not found!";
         }
         print "Using cal file $cal.\n";
     }
@@ -221,8 +225,8 @@ MAIN: {
     foreach my $file (@files) {
         print "\n$ram_dir$file\n";
 
-        my $fh # = new FileHandle( $ram_dir . $file, "r" )
-        FileHandle->new($ram_dir . $file, "r" => $fh)
+        my $fh;    # = new FileHandle( $ram_dir . $file, "r" )
+        FileHandle->new( $ram_dir . $file, "r" => $fh )
           or die "Can't open input " . $ram_dir . $file . ": $!";
 
         #load file header (5 lines)
@@ -721,11 +725,13 @@ MAIN: {
                               . "obs_time = DATE_ADD(\"$jan1date\", "
                               . "INTERVAL $days_to_add DAY) "
                               . "AND (data_mode=1 or data_mode=2 or data_mode=3) AND ("
-                              . ( ( $seacat_type{$sensor} == 0 ) ? "0"
+                              . (
+                                ( $seacat_type{$sensor} == 0 ) ? "0"
                                 : "(senstype=$seacat_type{$sensor} AND sensor_sn=$seacat_serial{$sensor})"
                               )
                               . " OR "
-                              . ( ( $module_type{$sensor} == 0 ) ? "0"
+                              . (
+                                ( $module_type{$sensor} == 0 ) ? "0"
                                 : "(senstype=$module_type{$sensor} AND sensor_sn=$module_serial{$sensor})"
                               ) . ")\n";
                         }    #end if "salc"
@@ -796,11 +802,13 @@ MAIN: {
                               . "AND  deploy_id = \"$dep\" "
                               . "AND  (data_mode=1 or data_mode=2 or data_mode=3) "
                               . "AND \n("
-                              . ( ( $seacat_type{$sensor} == 0 ) ? "0"
+                              . (
+                                ( $seacat_type{$sensor} == 0 ) ? "0"
                                 : "(senstype=$seacat_type{$sensor} AND sensor_sn=$seacat_serial{$sensor})"
                               )
                               . " OR \n"
-                              . ( ( $module_type{$sensor} == 0 ) ? "0"
+                              . (
+                                ( $module_type{$sensor} == 0 ) ? "0"
                                 : "(senstype=$module_type{$sensor} AND sensor_sn=$module_serial{$sensor})"
                               ) . ")\n";
                         }
@@ -1056,9 +1064,10 @@ sub sql_script {
 
     my $scriptfile = $ram_dir . $deployment . '.sql';
     if ( -r $scriptfile ) {
+
         # my $fh = new FileHandle( $scriptfile, "r" )
-        my $fh
-        FileHandle->new( $scriptfile, "r" => $fh)
+        my $fh;
+        FileHandle->new( $scriptfile, "r" => $fh )
           or die "File $scriptfile exists, but can\'t be opened: $!";
         my @scriptlines = <$fh>;
         $fh->close;
