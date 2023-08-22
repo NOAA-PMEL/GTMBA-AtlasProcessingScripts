@@ -27,6 +27,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: true
           VALIDATE_PYTHON_PYLINT: true
+          VALIDATE_PERL: true
           VALIDATE_BASH: true
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
