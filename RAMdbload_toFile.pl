@@ -1,7 +1,8 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-
+use Data::Dumper;
+use File::Spec;
 use FileHandle;
 use AtlasData::Buoy;
 use RamData::Flags qw(%FLAG);
@@ -45,6 +46,21 @@ if (@opts == 0 or $opts =~ /all/io)
 # pres      wpres           pres
 # curr      currents        curr
 
+my $ramdbloadlog;
+
+# A bash example:
+#
+#  export RAMDBLOADLOGDIR="/Users/USER/AtlasData/Processing"
+#
+
+if (not defined $ENV{RAMDBLOADLOGDIR}) {
+    die "ERROR: Environment variable missing, 'RAMDBLOADLOGDIR'";
+}
+if (not $ENV{RAMDBLOADLOGDIR}) {
+    die "ERROR: Environment variable empty, 'RAMDBLOADLOGDIR'";
+}
+$ramdbloadlog = File::Spec->join($ENV{RAMDBLOADLOGDIR}, "RAMdbload" . $dep . "_out.txt");
+
 my ($ram_dir,$cal_dir,$dep2);
 
 $ram_dir = $cal_dir = $dep = lc $dep;
@@ -54,49 +70,42 @@ if ($dep =~ /^pm/io)
   $cal_dir =~ s/pm(\d{3})[a-f]/PM$1/io;
   $ram_dir =~ s/pm(\d{3})([a-f])/pm$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 elsif ($dep =~ /^qm/io)
   {
   $cal_dir =~ s/qm(\d{3})[a-f]/QM$1/io;
   $ram_dir =~ s/qm(\d{3})([a-f])/qm$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 elsif ($dep =~ /^pi/io)
   {
   $cal_dir =~ s/pi(\d{3})[a-f]/PI$1/io;
   $ram_dir =~ s/pi(\d{3})([a-f])/pi$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 elsif ($dep =~ /^ra/io)
   {
   $cal_dir =~ s/ra(\d{3})[a-f]/RA$1/io;
   $ram_dir =~ s/ra(\d{3})([a-f])/ra$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 elsif ($dep =~ /^ke/io)
   {
   $cal_dir =~ s/ke(\d{3})[a-f]/KE$1/io;
   $ram_dir =~ s/ke(\d{3})([a-f])/ke$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 elsif ($dep =~ /^pa/io)
   {
   $cal_dir =~ s/pa(\d{3})[a-f]/PA$1/io;
   $ram_dir =~ s/pa(\d{3})([a-f])/pa$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 elsif ($dep =~ /^ar/io)
   {
   $cal_dir =~ s/ar(\d{3})[a-f]/AR$1/io;
   $ram_dir =~ s/ar(\d{3})([a-f])/ar$1/io;
   $dep2=$1.$2;
-  $ram_dir = '/Users/white/Repos/AtlasData/Processing/' . $ram_dir . '/';
   }
 else  # it's not a standard next-gen mooring.   default to directory below
   {
@@ -107,6 +116,8 @@ else  # it's not a standard next-gen mooring.   default to directory below
   $dep2=$2.$3;
   # $ram_dir = '/archive/summer/summer4/data/seacat/' . $ram_dir . '/';
   }
+
+$ram_dir = File::Spec->join($ENV{RAMDBLOADLOGDIR}, $ram_dir);
 opendir DIR, $ram_dir or die "Couldn't open directory $ram_dir!";
 my @dir_list=readdir DIR;
 closedir DIR;
@@ -205,7 +216,7 @@ if (scalar(@files)==0)
 # my $dbh = secure_connect_db('SiteData','RAMdbload')
 #   or die "Couldn't connect to database SiteData!";
 
-open(my $dbh, '>', '/Users/white/Repos/AtlasData/Processing/RAMdbload_out.txt')
+open(my $dbh, '>', $ramdbloadlog)
   or die "Couldn't connect to database SiteData!";
 
 #now start the main loop:  go through each file we want to load
