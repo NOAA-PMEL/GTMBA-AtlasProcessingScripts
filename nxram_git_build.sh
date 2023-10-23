@@ -27,7 +27,7 @@ elif [ -z "$2" ]; then
     exit
 elif [[ "$1" =~ $valid ]]; then
     echo "depid is '$1' and commit message is '$2'"
-    cd /home/data/nxram/"$1" || echo "$1 was not found" && exit 2
+    cd "/home/data/nxram/$1" || echo "$1 was not found"
     git init --shared
     touch GIT
     git add .
