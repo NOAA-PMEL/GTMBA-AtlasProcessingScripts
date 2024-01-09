@@ -4,8 +4,8 @@
 """
 Simple script to convert dates to Julian of an Atlas2 (NX) ram file.
 
-Usage: python2 atlasConvert.py [ram file]
-Example: python2 atlasConvert met111a.ram
+Usage: python atlasConvert.py [ram file]
+Example: python atlasConvert met111a.ram
 """
 
 import sys

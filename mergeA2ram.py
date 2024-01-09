@@ -4,7 +4,7 @@ Simple script for pulling in 2 Atlas ram files and merging them into a single
 ram file. Takes the first file and replaces the data column for the serial
 number provided with the data column of the second fileself.
 
-Example: python2 15533 temp113a.ram_orig temp113a.ram_120 > temp113a.ram
+Example: python 15533 temp113a.ram_orig temp113a.ram_120 > temp113a.ram
 """
 
 import sys

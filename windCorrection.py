@@ -5,8 +5,8 @@
 Simple script to alter DIR, U, & V in a met ram file.
 Assumes that the difference is the same for the entire deployment.
 
-Usage: python2 windDirFix.py [ram file] [deg. change]
-Example: python2 windCorrection met111a.ram 180
+Usage: python windDirFix.py [ram file] [deg. change]
+Example: python windCorrection met111a.ram 180
 """
 
 from datetime import datetime

@@ -42,7 +42,7 @@ $(SUBSURF:%=%$(NUM)$(SUF).ram) : $(DEP).cal
 	bash scripts/badA2increment.sh 15540 120 $(DEP)
 	processA2Mod $(DEP) --cal=$^ ./
 	mv temp113a.ram temp113a.ram_orig
-	python2 scripts/mergeA2ram.py 15540 temp113a.ram_orig temp113a.ram_120 > temp113a.ram
+	python scripts/mergeA2ram.py 15540 temp113a.ram_orig temp113a.ram_120 > temp113a.ram
 
 $(SUBSURF:%=%$(NUM)$(SUF).flg) : %.flg : %.ram flag$(NUM)$(SUF).txt
 	flag_data $(DEP) $^
