@@ -23,4 +23,10 @@ patt = re.compile(
 for m in re.finditer(patt, args.file.read()):
     out.append(float(m.group(0)))
 
+if not out:
+    patt = re.compile(r"(?<=\w\s{4}#\d{5}\s{2})(\d{1,3}\.\d|\d{2,}|\d{1,})")
+
+    for m in re.finditer(patt, args.file.read()):
+        out.append(float(m.group(0)))
+
 print(str(out))
