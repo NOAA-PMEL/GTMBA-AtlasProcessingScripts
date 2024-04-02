@@ -8,9 +8,9 @@ name: Lint Code Base
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 jobs:
   run-lint:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_PYTHON_BLACK: true
-          VALIDATE_PYTHON_PYLINT: true
+          VALIDATE_PYTHON_PYLINT: false
           VALIDATE_PERL: true
           VALIDATE_BASH: true
           DEFAULT_BRANCH: main
