@@ -6,7 +6,7 @@ from argparse import ArgumentParser as AP
 
 # ArgParser
 parser = AP(
-    prog="strip_temp_numbers",
+    prog="atlas_strip_temp_numbers",
     description="Script to pull percent return numbers for Atlas subsurface temperature data from a summary file",
 )
 parser.add_argument("file", metavar="file", help="Summmary file (.sum)", type=open)

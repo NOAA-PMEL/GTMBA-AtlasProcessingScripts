@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-## Author: Daryn White, daryn.white@noaa.gov
-## Last altered: 2018-01-24
+"""
+Script to alter a rain file. Alters the entire deployment.
+
+ Author: Daryn White, daryn.white@noaa.gov
+"""
 import sys
 import argparse
 import tao.atlas.ram
@@ -8,7 +11,7 @@ import tao.util.calc
 
 ## Parse handed arguments
 parser = argparse.ArgumentParser(
-    prog="rainFix",
+    prog="atlas_rain_fix",
     description="Simple script to alter a rain file. Alters the entire deployment.",
 )
 parser.add_argument("fl", metavar="file", help="RAM file for processing")
@@ -39,16 +42,10 @@ frame.loc[:, ("RAIN", "-3")] = rainFixed
 # Write file with altered data
 read.writeAtlas(frame, output=args.fl + "_fixed")
 
-out = """
+out = f"""
 :: NEED TO ADD THIS TO FLAG FILE! ::
-## Altered rain data by %d ml and scaled %d to %d & %d to %d
+## Altered rain data by {args.val} ml and scaled {args.A} to {args.a} & {args.B} to {args.b}
 BEGIN END  Q3  1
-""" % (
-    args.val,
-    args.A,
-    args.a,
-    args.B,
-    args.b,
-)
+"""
 
-print(out)
+sys.stdout.write(out)

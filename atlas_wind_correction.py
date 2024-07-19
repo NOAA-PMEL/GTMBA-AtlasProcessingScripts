@@ -9,10 +9,10 @@ Usage: python windDirFix.py [ram file] [deg. change]
 Example: python windCorrection met111a.ram 180
 """
 
+import argparse
 from datetime import datetime
 import tao.atlas.ram
 import tao.util.calc
-import argparse
 
 
 # Date normalizing function
@@ -32,14 +32,14 @@ def normalizedate(date):
         try:
             dts = datetime.strptime(date, f)
             break
-        except:
+        except ValueError:
             pass
     return dts
 
 
 # Arg parsing
 parser = argparse.ArgumentParser(
-    prog="atlasWindCorrection",
+    prog="atlas_wind_correction",
     description="""
     Simple script to alter DIR, U, & V in a met ram file.
     Assumes that the difference is the same for the entire deployment.""",
@@ -124,36 +124,28 @@ else:
 fl.writeAtlas(frame, output=args.ramFile + "_fixed")
 
 if datestart and datestop:
-    out = """
+    out = f"""
     :: NEED TO ADD THIS TO FLAG FILE! ::
-    ## Altered wind data by {} deg
-    {} {}  Q3  1..4
-    """.format(
-        deg, datestart.strftime("%Y%j%H%M%S"), datestop.strftime("%Y%j%H%M%S")
-    )
+    ## Altered wind data by {deg} deg
+    {datestart.strftime("%Y%j%H%M%S")} {datestop.strftime("%Y%j%H%M%S")}  Q3  1..4
+    """
 elif datestart:
-    out = """
+    out = f"""
     :: NEED TO ADD THIS TO FLAG FILE! ::
-    ## Altered wind data by {} deg
-    {} END  Q3  1..4
-    """.format(
-        deg, datestart.strftime("%Y%j%H%M%S")
-    )
+    ## Altered wind data by {deg} deg
+    {datestart.strftime("%Y%j%H%M%S")} END  Q3  1..4
+    """
 elif datestop:
-    out = """
+    out = f"""
     :: NEED TO ADD THIS TO FLAG FILE! ::
-    ## Altered wind data by {} deg
-    BEGIN {}  Q3  1..4
-    """.format(
-        deg, datestop.strftime("%Y%j%H%M%S")
-    )
+    ## Altered wind data by {deg} deg
+    BEGIN {datestop.strftime("%Y%j%H%M%S")}  Q3  1..4
+    """
 else:
-    out = """
+    out = f"""
     :: NEED TO ADD THIS TO FLAG FILE! ::
-    ## Altered wind data by {} deg
+    ## Altered wind data by {deg} deg
     BEGIN END  Q3  1..4
-    """.format(
-        deg
-    )
+    """
 
 print(out)

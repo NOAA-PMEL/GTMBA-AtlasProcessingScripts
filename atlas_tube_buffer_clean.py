@@ -8,15 +8,15 @@ from argparse import ArgumentParser as AP
 
 
 # Functions
-def is_binary(bytes):
+def is_binary(test_bytes):
     "Boolean function for determing file as binary or hex"
     textchars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
-    return bool(bytes.translate(None, textchars))
+    return bool(test_bytes.translate(None, textchars))
 
 
 # Regex
-patt = r"(?<!\b)CAFE"
-subs = "\\nCAFE"
+PATT = r"(?<!\b)CAFE"
+SUBS = "\\nCAFE"
 
 # Parser
 parser = AP(
@@ -41,6 +41,6 @@ with open(args.file, "rb") as file:
         hexData = file.read().decode().upper()
         outFile = file.name + "_cleaned"
 
-    cleanData = re.sub(patt, subs, hexData, 0, re.MULTILINE)
-    with open(outFile, "w") as output:
+    cleanData = re.sub(PATT, SUBS, hexData, 0, re.MULTILINE)
+    with open(outFile, "w", encoding="utf8") as output:
         output.write(cleanData)

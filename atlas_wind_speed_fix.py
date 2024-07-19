@@ -11,7 +11,7 @@ import tao.atlas.ram as RAM
 import tao.util.calc as calc
 
 parser = argparse.ArgumentParser(
-    prog="windSpeedFix",
+    prog="atlas_wind_speed_fix",
     description="Simple script to fix wind speeds, U & V, based on input.",
 )
 parser.add_argument("file", metavar="file", help="RAM file for editing")
@@ -34,12 +34,10 @@ frame.loc[:, ("SPEED", "-4")] = newSpd
 
 read.writeAtlas(frame)
 
-out = """
+out = f"""
 :: NEED TO ADD THIS TO FLAG FILE! ::
-## Altered wind speeds by dividing by {}
+## Altered wind speeds by dividing by {args.val}
 BEGIN END  Q3  1..4
-""".format(
-    args.val
-)
+"""
 
 sys.stdout.write(out)

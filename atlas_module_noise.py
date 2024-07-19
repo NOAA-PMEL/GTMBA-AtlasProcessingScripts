@@ -12,7 +12,7 @@ import tao.atlas.ram as RAM
 from numpy import nan as NAN
 
 parser = argparse.ArgumentParser(
-    prog="atlasModuleNoise",
+    prog="atlas_module_noise",
     description="Simple script to fix cyclic data within Atlas subsurface RAM",
 )
 parser.add_argument("file", metavar="file", help="RAM file for editing")
@@ -32,7 +32,7 @@ module[module == args.val] = NAN
 os.rename(args.file, args.file + "_orig")
 ram_file.writeAtlas(frame, output=args.file)
 
-print(
+sys.stdout.write(
     f"""
 Module {args.serial} at {args.depth}m has had all {args.val} removed.
 See the new {args.file} file; {args.file}_orig saved for reference."""

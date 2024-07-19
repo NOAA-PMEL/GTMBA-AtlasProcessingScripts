@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Simple script for reviewing Atlas tube files and data BUFFERS
 """
@@ -29,7 +31,7 @@ def _found_matches(match):
             )
 
 
-parser = AP(prog="compare_tube_files", description="Compares two ")
+parser = AP(prog="atlas_buffer_search", description="Compares two ")
 parser.add_argument(
     "files",
     metavar="files",

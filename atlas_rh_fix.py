@@ -3,17 +3,17 @@
 Script to check for & set RH values over 100% to 100%
 Also, this will set the flag falue to 3
 
+Author: Daryn White, daryn.white@noaa.gov
+
 Use: atlasRH met124a.flg
 """
-## Author: Daryn White, daryn.white@noaa.gov
-## Last altered: 2020-10-27
 import os
 import argparse
 import tao.atlas.flg
 
 ## Parse handed arguments
 parser = argparse.ArgumentParser(
-    prog="atlasRH",
+    prog="atlas_rh_fix",
     description="Simple script to alter the RH of a met file. Sets all values >100.0 to Q3 and 100.0",
 )
 parser.add_argument("fl", metavar="file", help="FLG file for processing")
